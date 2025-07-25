@@ -1,11 +1,7 @@
 @echo off
 title Windows System Maintenance CLI BAT
 color 1F
-REM mode con: cols=100 lines=30
 
-REM ###########################################
-REM # Administrator Privilege Check
-REM ###########################################
 net session >nul 2>&1
 if %errorlevel% NEQ 0 (
     echo.
@@ -23,7 +19,7 @@ echo  ============================================
 echo   WINDOWS SYSTEM MAINTENANCE TOOLKIT
 echo  ============================================
 echo.
-echo  Please select an operation level:
+echo  Select an operation:
 echo.
 echo   [1] BASIC       - System File Checker (SFC) scan only
 echo   [2] STANDARD    - SFC + Deployment Image Servicing (DISM)
