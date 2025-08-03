@@ -139,16 +139,41 @@ echo Checking for updates...
 start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "try {" ^
     "$url='https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat';" ^
+    "$checksumUrl='https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat.sha256';" ^
     "$localPath='%~f0';" ^
     "$tempPath='%~dp0tmp.bat';" ^
     "Write-Host '[Update Check] Connecting to GitHub...';" ^
+    "Write-Host 'Downloading sha256 file...';" ^
+    "$checksumContent=Invoke-RestMethod $checksumUrl -ErrorAction Stop;" ^
+    "$expectedHash=$checksumContent.Split()[0].Trim().ToLower();" ^
+    "if (-not $expectedHash -or $expectedHash.Length -ne 64) {" ^
+      "Write-Host ('! Invalid checksum format in checksum file') -ForegroundColor Red;" ^
+      "Write-Host ('Expected 64-character SHA256 hash, got: ' + $expectedHash);" ^
+      "pause;" ^
+      "exit 1" ^
+    "}" ^
+    "Write-Host ('expected: ' + $expectedHash) -ForegroundColor Yellow;" ^
+    "Write-Host 'Downloading script...';" ^
     "$remote=Invoke-RestMethod $url -ErrorAction Stop;" ^
     "$local=Get-Content -Raw $localPath -ErrorAction Stop;" ^
+    "Write-Host 'Verifying checksum...';" ^
+    "$sha256=[System.Security.Cryptography.SHA256]::Create();" ^
+    "$remoteHash=[System.BitConverter]::ToString($sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($remote))).Replace('-','').ToLower();" ^
+    "Write-Host ('actual: ' + $remoteHash) -ForegroundColor Yellow;" ^
+    "if ($remoteHash -ne $expectedHash) {" ^
+      "Write-Host '! Checksum verification failed' -ForegroundColor Red;" ^
+      "Write-Host ('Expected: ' + $expectedHash);" ^
+      "Write-Host ('Actual  : ' + $remoteHash);" ^
+      "Write-Host 'Update aborted due to security risk or corruption. Try again later.';" ^
+      "pause;" ^
+      "exit 1" ^
+    "}" ^
+    "Write-Host 'Checksum matches!' -ForegroundColor Green;" ^
     "if ($local -ne $remote) {" ^
-      "Write-Host 'New version found! Updating...' -ForegroundColor Yellow;" ^
+      "Write-Host 'Updating...' -ForegroundColor Yellow;" ^
       "Invoke-WebRequest $url -OutFile $tempPath -ErrorAction Stop;" ^
       "Move-Item -Force $tempPath $localPath;" ^
-      "Write-Host 'Update complete! Run the script again.' -ForegroundColor Green;" ^
+      "Write-Host 'Update complete!' -ForegroundColor Green;" ^
       "pause;" ^
       "exit 0" ^
     "} else {" ^
@@ -157,8 +182,8 @@ start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
       "exit 0" ^
     "}" ^
   "} catch {" ^
-    "Write-Host '! Update failed: $($_.Exception.Message)' -ForegroundColor Red;" ^
-    "Write-Host 'Please check your internet connection.';" ^
+    "Write-Host ('! Update failed: ' + $_.Exception.Message) -ForegroundColor Red;" ^
+    "Write-Host 'Perhaps check your internet connection or read exception.';" ^
     "pause;" ^
     "exit 1" ^
   "}"
