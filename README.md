@@ -1,4 +1,4 @@
-# 🧰 WinSysMaint-CLI
+# 🧰 WinSysMaintain-CLI
 
 **A lightweight, no-bloat Windows maintenance toolkit — all in a single `.bat` file.**
 
@@ -9,9 +9,9 @@ Perfect for IT pros, power users, or anyone who wants reliable system maintenanc
 
 ---
 
-### 🔧 Why WinSysMaint-CLI?
+### 🔧 Why WinSysMaintain-CLI?
 
-Unlike bloated scripts and cluttered tools, **WinSysMaint-CLI** is:
+Unlike bloated scripts and cluttered tools, **WinSysMaintain-CLI** is:
 
 - ✅ **Minimal** – Just the essentials, no redundant fluff.
 - 🪶 **Lightweight** – A single `.bat` file you can run anywhere.
