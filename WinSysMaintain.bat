@@ -26,9 +26,10 @@ echo   [2] STANDARD     - DISM + SFC
 echo   [3] COMPREHENSIVE- CHKDSK, DISM, SFC
 echo   [4] UTILITIES    - Security scans and cleanup tools
 echo   [5] PORT CHECK   - Network ports
+echo   [6] UPDATE
 echo.
 echo  ============================================
-choice /C 12345 /N /M "Enter your selection (1-5): "
+choice /C 123456 /N /M "Enter selection : "
 set OPTION=%errorlevel%
 
 if %OPTION%==1 goto :BASIC_SCAN
@@ -36,6 +37,7 @@ if %OPTION%==2 goto :STANDARD_SCAN
 if %OPTION%==3 goto :FULL_SCAN
 if %OPTION%==4 goto :SECURITY_TOOLS
 if %OPTION%==5 goto :PORT_CHECK
+if %OPTION%==6 goto :UPDATE
 
 :BASIC_SCAN
 cls
@@ -129,3 +131,35 @@ echo  Note: Some repairs may require a restart.
 echo  Press any key to go back...
 pause >nul
 goto MAIN_MENU
+
+
+:UPDATE
+@echo off
+echo Checking for updates...
+start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "try {" ^
+    "$url='https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat';" ^
+    "$localPath='%~f0';" ^
+    "$tempPath='%~dp0tmp.bat';" ^
+    "Write-Host '[Update Check] Connecting to GitHub...';" ^
+    "$remote=Invoke-RestMethod $url -ErrorAction Stop;" ^
+    "$local=Get-Content -Raw $localPath -ErrorAction Stop;" ^
+    "if ($local -ne $remote) {" ^
+      "Write-Host 'New version found! Updating...' -ForegroundColor Yellow;" ^
+      "Invoke-WebRequest $url -OutFile $tempPath -ErrorAction Stop;" ^
+      "Move-Item -Force $tempPath $localPath;" ^
+      "Write-Host 'Update complete! Run the script again.' -ForegroundColor Green;" ^
+      "pause;" ^
+      "exit 0" ^
+    "} else {" ^
+      "Write-Host 'Already up to date.' -ForegroundColor Green;" ^
+      "pause;" ^
+      "exit 0" ^
+    "}" ^
+  "} catch {" ^
+    "Write-Host '! Update failed: $($_.Exception.Message)' -ForegroundColor Red;" ^
+    "Write-Host 'Please check your internet connection.';" ^
+    "pause;" ^
+    "exit 1" ^
+  "}"
+exit /b 0
