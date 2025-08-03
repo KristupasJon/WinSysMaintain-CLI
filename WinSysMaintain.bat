@@ -27,7 +27,6 @@ echo   [3] COMPREHENSIVE- CHKDSK, DISM, SFC
 echo   [4] UTILITIES    - Security scans and cleanup tools
 echo   [5] PORT CHECK   - Network ports
 echo   [6] UPDATE OR REPAIR
-echo.
 echo  ============================================
 choice /C 123456 /N /M "Enter selection : "
 set OPTION=%errorlevel%
@@ -68,8 +67,8 @@ echo.
 echo  [COMPREHENSIVE MAINTENANCE] Full system diagnostics
 echo  ============================================
 echo.
-echo  Phase [1/5]: Disk Health (WMIC)
-wmic diskdrive get status
+echo  Phase [1/5]: Disk Health
+powershell -Command "Get-PhysicalDisk | Select-Object DeviceID, MediaType, OperationalStatus"
 echo.
 echo  Phase [2/5]: CHKDSK
 chkdsk /scan
@@ -91,18 +90,20 @@ echo.
 echo  [SYSTEM UTILITIES] Security and cleanup (NOTE : Wait for windows to open and register that they closed, it can take a bit)
 echo  ============================================
 echo.
-echo  Phase [1/4]: Defender Quick Scan
+echo  Phase [1/5]: Defender Quick Scan
 pushd "%ProgramFiles%\Windows Defender"
 MpCmdRun.exe -Scan -ScanType 1 -DisableRemediation -ReturnHR
 popd
 echo.
-echo  Phase [2/4]: MS Malicious Software Removal
+echo  Phase [2/5]: MS Malicious Software Removal
 mrt.exe
 echo.
-echo  Phase [3/4]: Driver Signature Verification
+echo  Phase [3/5]: Driver Signature Verification
 sigverif
+echo  Phase [4/5]: Flushing DNS Resolver Cache
+ipconfig /flushdns
 echo.
-echo  Phase [4/4]: Disk Cleanup
+echo  Phase [5/5]: Disk Cleanup
 cleanmgr
 
 goto :COMPLETION
