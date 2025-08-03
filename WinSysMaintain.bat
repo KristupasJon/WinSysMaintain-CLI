@@ -26,7 +26,7 @@ echo   [2] STANDARD     - DISM + SFC
 echo   [3] COMPREHENSIVE- CHKDSK, DISM, SFC
 echo   [4] UTILITIES    - Security scans and cleanup tools
 echo   [5] PORT CHECK   - Network ports
-echo   [6] UPDATE
+echo   [6] UPDATE OR REPAIR
 echo.
 echo  ============================================
 choice /C 123456 /N /M "Enter selection : "
