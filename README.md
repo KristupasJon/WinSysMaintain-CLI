@@ -47,7 +47,7 @@ To get started with **WinSysMaintain-CLI**, follow these steps:
 1. **Download the Script**:
    Open cmd and run the following command to download the latest version of the script:
    ```cmd
-    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat' -OutFile 'WinSysMaintain.bat'"
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat' -ErrorAction Stop -OutFile 'WinSysMaintain.bat'"
    ```
 
 2. **Run the Script**:
