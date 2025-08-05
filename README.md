@@ -3,7 +3,7 @@
 **A lightweight, no-bloat Windows maintenance toolkit — all in a single `.bat` file.**
 
 Perfectly portable and quickly updatable.
-Perfect for IT pros, power users, or anyone who wants reliable system maintenance without the clutter.
+Perfect for power users, or anyone who wants reliable system maintenance without the clutter.
 
 ![Main Menu](https://github.com/user-attachments/assets/5d7a8303-3644-4242-a1ed-efd615123ffc)
 
@@ -28,14 +28,35 @@ Choose your level of cleanup with a single keypress:
 
 | Mode             | Tasks Performed                                                                 |
 |------------------|----------------------------------------------------------------------------------|
+| **Windows Update** | ✅ Installs Windows updates (no driver updates)                                 |
 | **Basic**        | ✅ System File Checker (SFC) only                                                |
 | **Standard**     | ✅ DISM Image Repair<br>✅ SFC Scan                                               |
 | **Comprehensive**| ✅ CHKDSK<br>✅ DISM Image Repair<br>✅ SFC Scan                                  |
-| **Utilities**    | ✅ Defender Quick Scan<br>✅ MSRT<br>✅ SigVerif<br>✅ Disk Cleanup                |
+| **Utilities**    | ✅ Defender Quick Scan<br>✅ MSRT<br>✅ SigVerif<br>✅ Disk Cleanup<br>✅ DNS Flush                |
 | **Port Check**   | `netstat -abn` + `netstat -a -n -o`                                              |
+| **Update or Repair** | ✅ Downloads the latest version of the script from GitHub and verifies its integrity |
+
+---
+
+### 🚀 Installation
+
+To get started with **WinSysMaintain-CLI**, follow these steps:
+
+1. **Download the Script**:
+   Open cmd and run the following command to download the latest version of the script:
+   ```cmd
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat' -OutFile 'WinSysMaintain.bat'"
+   ```
+
+2. **Run the Script**:
+   Right-click the downloaded `WinSysMaintain.bat` file and select **Run as Administrator**.
 
 ---
 
 ### 📚 Sources
 
 - [System File Checker Tool](https://support.microsoft.com/en-us/topic/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system-files-79aa86cb-ca52-166a-92a3-966e85d4094e)
+- [DISM Tool](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/repair-a-windows-image)
+- [CHKDSK Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/chkdsk)
+- [Windows Defender](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-in-windows-10)
+- [Netstat Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat)
