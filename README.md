@@ -5,7 +5,8 @@
 Perfectly portable and quickly updatable.
 Perfect for power users, or anyone who wants reliable system maintenance without the clutter.
 
-![Main Menu](https://github.com/user-attachments/assets/5d7a8303-3644-4242-a1ed-efd615123ffc)
+![Main Menu](https://github.com/user-attachments/assets/0371bc51-54da-4ad3-b5c8-ab16cb87a9f3)
+
 
 ---
 
@@ -18,7 +19,8 @@ Unlike bloated scripts and cluttered tools, **WinSysMaintain-CLI** is:
 - 🚀 **Portable** – No installation required. Ideal for USB drives, remote work, or IT toolkits.
 - 🔐 **Secure Auto-Updating** – Keeps itself current without the hassle.
 
-![Self-Updating](https://github.com/user-attachments/assets/d41cc55c-018e-4a2e-9767-ca23a5f872b1)
+![Self-Updating](https://github.com/user-attachments/assets/6ddb598c-13f8-4bc9-ad5d-342caaa66783)
+
 
 ---
 
