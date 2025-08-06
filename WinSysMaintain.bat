@@ -26,19 +26,25 @@ echo            "                             __/ |                             
 echo            "                            |___/                                            "
 echo.
 echo                      Windows Lightweight System Maintenance CLI by KRISTUPAS
-echo                                        version 20250806
+echo                                        version 20250806.2
+echo                        (https://github.com/KristupasJon/WinSysMaintain-CLI)
 echo.
 echo  Select an operation:
 echo.
+echo  [SYSTEM MAINTENANCE]
 echo   [0] WINDOWS UPDATE - Windows updates, no driver updates
 echo   [1] BASIC        - SFC only
 echo   [2] STANDARD     - DISM + SFC
-echo   [3] COMPREHENSIVE- CHKDSK, DISM, SFC
-echo   [4] UTILITIES    - Security scans and cleanup tools
-echo   [5] PORT CHECK   - Network ports
+echo   [3] COMPREHENSIVE- CHKDSK + DISM + SFC
+echo.
+echo  [UTILITIES]
+echo   [4] SECURITY AND UTILITY SCANS - (Defender, mrt.exe, sigverif, DNS flush, Disk Cleanup)
 echo   [6] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
+echo.
+echo  [NETWORKING]
+echo   [5] PORT CHECK   - Network ports
 echo   [7] MAS          - Microsoft Activation Scripts (MAS) - Activation scripts for Windows and Office
-echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH
+echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
 echo.
 echo  ============================================
 echo.
