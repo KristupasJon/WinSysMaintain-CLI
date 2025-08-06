@@ -26,7 +26,7 @@ echo            "                             __/ |                             
 echo            "                            |___/                                            "
 echo.
 echo                      Windows Lightweight System Maintenance CLI by KRISTUPAS
-echo                                        version 20250805
+echo                                        version 20250806
 echo.
 echo  Select an operation:
 echo.
@@ -36,14 +36,17 @@ echo   [2] STANDARD     - DISM + SFC
 echo   [3] COMPREHENSIVE- CHKDSK, DISM, SFC
 echo   [4] UTILITIES    - Security scans and cleanup tools
 echo   [5] PORT CHECK   - Network ports
-echo   [6] UPDATE OR REPAIR (Uses https and confirms sha256 hash) - Downloads latest version from GitHub
+echo   [6] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
+echo   [7] MAS          - Microsoft Activation Scripts (MAS) - Activation scripts for Windows and Office
+echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH
+echo.
 echo  ============================================
 echo.
 powershell -NoProfile -Command ^
   "Write-Host -ForegroundColor Green 'If you encounter any issues, feel free to report them on GitHub:';" ^
   "Write-Host -ForegroundColor Cyan 'https://github.com/KristupasJon/WinSysMaintain-CLI/issues' Double click and CTRL+C;" ^
   "Write-Host ''"
-choice /C 0123456 /N /M "Enter selection : "
+choice /C 012345678 /N /M "Enter selection : "
 set /A OPTION=%errorlevel%-1
 
 if %OPTION%==0 goto :WINDOWS_UPDATE
@@ -53,6 +56,8 @@ if %OPTION%==3 goto :FULL_SCAN
 if %OPTION%==4 goto :SECURITY_TOOLS
 if %OPTION%==5 goto :PORT_CHECK
 if %OPTION%==6 goto :UPDATE
+if %OPTION%==7 goto :MAS
+if %OPTION%==8 goto :DNS_MANAGEMENT
 
 :WINDOWS_UPDATE
 cls
@@ -175,6 +180,9 @@ echo.
 echo netstat -abn
 netstat -abn
 echo.
+pause
+echo  ============================================
+echo  [PORT CHECK] Network ports (alternative view)
 echo netstat -a -n -o
 netstat -a -n -o
 pause
@@ -248,3 +256,90 @@ start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "exit 1" ^
   "}"
 exit /b 0
+
+:MAS
+cls
+echo.
+echo  [MAS] Microsoft Activation Scripts (MAS)
+echo  ============================================
+echo  This operation will run the Microsoft Activation Scripts (MAS).
+echo  Please ensure you understand the implications of running this script.
+echo  For more information, visit: https://github.com/massgravel/Microsoft-Activation-Scripts/tree/master
+echo  Will run: "irm https://get.activated.win | iex" on powershell
+echo.
+echo  You will have 10 seconds to read this message.
+timeout /t 10 /nobreak >nul
+echo.
+:MAS_CONFIRM
+set /p CONFIRM="Type 'Yes, I understand' to proceed or 'exit' to return to the main menu: "
+if /I "%CONFIRM%"=="exit" goto :MAIN_MENU
+if /I not "%CONFIRM%"=="Yes, I understand" goto :MAS_CONFIRM
+echo.
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { irm https://get.activated.win | iex; Write-Host 'MAS script executed successfully.' -ForegroundColor Green } catch { Write-Host 'Failed to execute MAS script: $_' -ForegroundColor Red }"
+pause
+goto :MAIN_MENU
+
+:DNS_MANAGEMENT
+cls
+echo.
+echo  [DNS MANAGEMENT] Manage DNS settings and enable DoH (Not recommended!)
+echo  (Manual changes via PowerShell may affect DNS options in Windows Settings.)
+echo  The Settings app may show DNS as "unencrypted" even if DoH is enabled.
+echo  Restoring DNS to automatic (DHCP) via PowerShell can sometimes fail or not reflect in Settings. 
+echo  If this happens, manually reset your network adapter or use Windows Settings to restore DNS to automatic.
+echo.
+echo  For best results, use:
+powershell -NoProfile -Command "Write-Host ' Settings > Network & Internet > Ethernet or Wi-Fi > Edit DNS to change DNS.' -ForegroundColor Green"
+echo  This is the most reliable method and ensures changes are properly reflected in Windows.
+echo  If you experience issues, you may need to reset your network adapter or restore DNS to automatic (DHCP).
+echo  ============================================
+echo.
+echo  [1] Set DNS to Google (IPv4: 8.8.8.8 / 8.8.4.4, IPv6: 2001:4860:4860::8888 / 2001:4860:4860::8844)
+echo  [2] Set DNS to Cloudflare (IPv4: 1.1.1.1 / 1.0.0.1, IPv6: 2606:4700:4700::1111 / 2606:4700:4700::1001)
+echo  [3] Restore automatic DNS (DHCP)
+echo  [4] Enable DNS over HTTPS (DoH)
+echo  [0] Return to Main Menu
+echo.
+set /p DNS_OPTION="Enter your choice: "
+if "%DNS_OPTION%"=="1" goto :SET_DNS_GOOGLE
+if "%DNS_OPTION%"=="2" goto :SET_DNS_CLOUDFLARE
+if "%DNS_OPTION%"=="3" goto :RESTORE_DNS
+if "%DNS_OPTION%"=="4" goto :ENABLE_DOH
+if "%DNS_OPTION%"=="0" goto :MAIN_MENU
+goto :DNS_MANAGEMENT
+
+:SET_DNS_GOOGLE
+cls
+echo Setting DNS to Google (IPv4 and IPv6)...
+powershell -Command "try { Get-NetAdapter | Where-Object { $_.Status -eq 'Up' } | ForEach-Object { Set-DnsClientServerAddress -InterfaceAlias $_.Name -ServerAddresses ('8.8.8.8','8.8.4.4','2001:4860:4860::8888','2001:4860:4860::8844') }; Write-Host 'DNS set to Google successfully.' -ForegroundColor Green } catch { Write-Host 'Failed to set DNS to Google: $_' -ForegroundColor Red }"
+ipconfig /flushdns
+echo DNS set to Google.
+pause
+goto :DNS_MANAGEMENT
+
+:SET_DNS_CLOUDFLARE
+cls
+echo Setting DNS to Cloudflare (IPv4 and IPv6)...
+powershell -Command "try { Get-NetAdapter | Where-Object { $_.Status -eq 'Up' } | ForEach-Object { Set-DnsClientServerAddress -InterfaceAlias $_.Name -ServerAddresses ('1.1.1.1','1.0.0.1','2606:4700:4700::1111','2606:4700:4700::1001') }; Write-Host 'DNS set to Cloudflare successfully.' -ForegroundColor Green } catch { Write-Host 'Failed to set DNS to Cloudflare: $_' -ForegroundColor Red }"
+ipconfig /flushdns
+echo DNS set to Cloudflare.
+pause
+goto :DNS_MANAGEMENT
+
+:RESTORE_DNS
+cls
+echo Restoring automatic DNS (DHCP)...
+powershell -Command "try { Get-NetAdapter | Where-Object { $_.Status -eq 'Up' } | ForEach-Object { Set-DnsClientServerAddress -InterfaceAlias $_.Name -ResetServerAddresses }; Write-Host 'DNS restored to automatic successfully.' -ForegroundColor Green } catch { Write-Host 'Failed to restore DNS to automatic: $_' -ForegroundColor Red }"
+ipconfig /flushdns
+echo DNS restored to automatic.
+pause
+goto :DNS_MANAGEMENT
+
+:ENABLE_DOH
+cls
+echo Enabling DNS over HTTPS (DoH)...
+powershell -Command "try { Invoke-Expression \"netsh dns add encryption server=1.1.1.1 dohtemplate=https://cloudflare-dns.com/dns-query autoupgrade=yes udpfallback=no\"; Invoke-Expression \"netsh dns add encryption server=8.8.8.8 dohtemplate=https://dns.google/dns-query autoupgrade=yes udpfallback=no\"; Write-Host 'DoH enabled successfully for Cloudflare and Google DNS servers.' -ForegroundColor Green } catch { Write-Host 'Failed to enable DoH: $_' -ForegroundColor Red }"
+ipconfig /flushdns
+echo DoH enabled for Cloudflare and Google DNS servers.
+pause
+goto :DNS_MANAGEMENT
