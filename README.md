@@ -5,8 +5,7 @@
 Perfectly portable and quickly updatable.
 Perfect for power users, or anyone who wants reliable system maintenance without the clutter.
 
-![Main Menu](https://github.com/user-attachments/assets/6c56d97d-f082-4fd3-83b4-ecabfcd6f859)
-
+![Main Menu](https://github.com/user-attachments/assets/d5971e52-35c9-4a11-b30f-70f4e5454376)
 
 ---
 
