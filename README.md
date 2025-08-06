@@ -36,7 +36,6 @@ Choose your level of cleanup with a single keypress:
 | **Port Check**   | `netstat -abn` + `netstat -a -n -o`                                              |
 | **Update or Repair** | ✅ Downloads the latest version of the script from GitHub and verifies its integrity |
 | **DNS Management** | ✅ Set DNS to Google or Cloudflare (IPv4 and IPv6)<br>✅ Restore automatic DNS (DHCP)<br>✅ Enable DNS over HTTPS (DoH) |
-| **MAS**          | ✅ Runs Microsoft Activation Scripts (MAS)                         |
 
 ---
 
@@ -62,5 +61,4 @@ To get started with **WinSysMaintain-CLI**, follow these steps:
 - [CHKDSK Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/chkdsk)
 - [Windows Defender](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-in-windows-10)
 - [Netstat Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat)
-- [Microsoft Activation Scripts (MAS)](https://github.com/massgravel/Microsoft-Activation-Scripts/tree/master)
 - [DNS over HTTPS (DoH)](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/)

@@ -39,12 +39,11 @@ echo   [3] COMPREHENSIVE- CHKDSK + DISM + SFC
 echo.
 echo  [UTILITIES]
 echo   [4] SECURITY AND UTILITY SCANS - (Defender, mrt.exe, sigverif, DNS flush, Disk Cleanup)
-echo   [6] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
+echo   [5] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
 echo.
 echo  [NETWORKING]
-echo   [5] PORT CHECK   - Network ports
-echo   [7] MAS          - Microsoft Activation Scripts (MAS) - Activation scripts for Windows and Office
-echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
+echo   [6] PORT CHECK   - Network ports
+echo   [7] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
 echo.
 echo  ============================================
 echo.
@@ -52,7 +51,7 @@ powershell -NoProfile -Command ^
   "Write-Host -ForegroundColor Green 'If you encounter any issues, feel free to report them on GitHub:';" ^
   "Write-Host -ForegroundColor Cyan 'https://github.com/KristupasJon/WinSysMaintain-CLI/issues' Double click and CTRL+C;" ^
   "Write-Host ''"
-choice /C 012345678 /N /M "Enter selection : "
+choice /C 01234567 /N /M "Enter selection : "
 set /A OPTION=%errorlevel%-1
 
 if %OPTION%==0 goto :WINDOWS_UPDATE
@@ -60,10 +59,9 @@ if %OPTION%==1 goto :BASIC_SCAN
 if %OPTION%==2 goto :STANDARD_SCAN
 if %OPTION%==3 goto :FULL_SCAN
 if %OPTION%==4 goto :SECURITY_TOOLS
-if %OPTION%==5 goto :PORT_CHECK
-if %OPTION%==6 goto :UPDATE
-if %OPTION%==7 goto :MAS
-if %OPTION%==8 goto :DNS_MANAGEMENT
+if %OPTION%==6 goto :PORT_CHECK
+if %OPTION%==5 goto :UPDATE
+if %OPTION%==7 goto :DNS_MANAGEMENT
 
 :WINDOWS_UPDATE
 cls
@@ -262,28 +260,6 @@ start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "exit 1" ^
   "}"
 exit /b 0
-
-:MAS
-cls
-echo.
-echo  [MAS] Microsoft Activation Scripts (MAS)
-echo  ============================================
-echo  This operation will run the Microsoft Activation Scripts (MAS).
-echo  Please ensure you understand the implications of running this script.
-echo  For more information, visit: https://github.com/massgravel/Microsoft-Activation-Scripts/tree/master
-echo  Will run: "irm https://get.activated.win | iex" on powershell
-echo.
-echo  You will have 10 seconds to read this message.
-timeout /t 10 /nobreak >nul
-echo.
-:MAS_CONFIRM
-set /p CONFIRM="Type 'Yes, I understand' to proceed or 'exit' to return to the main menu: "
-if /I "%CONFIRM%"=="exit" goto :MAIN_MENU
-if /I not "%CONFIRM%"=="Yes, I understand" goto :MAS_CONFIRM
-echo.
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { irm https://get.activated.win | iex; Write-Host 'MAS script executed successfully.' -ForegroundColor Green } catch { Write-Host 'Failed to execute MAS script: $_' -ForegroundColor Red }"
-pause
-goto :MAIN_MENU
 
 :DNS_MANAGEMENT
 cls
