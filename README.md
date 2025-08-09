@@ -18,6 +18,7 @@ Unlike bloated scripts and cluttered tools, **WinSysMaintain-CLI** is:
 - 🪶 **Lightweight** – A single `.bat` file you can run anywhere.
 - 🚀 **Portable** – No installation required. Ideal for USB drives, remote work, or IT toolkits.
 - 🔐 **Secure Auto-Updating** – Keeps itself current without the hassle.
+- 🔒 **Secure Downloads** – All downloads are protected with enforced TLS protocols (TLS 1.2 and TLS 1.3).
 
 ![Self-Updating](https://github.com/user-attachments/assets/6ddb598c-13f8-4bc9-ad5d-342caaa66783)
 
@@ -34,6 +35,7 @@ Choose your level of cleanup with a single keypress:
 | **Standard**     | ✅ DISM Image Repair<br>✅ SFC Scan                                               |
 | **Comprehensive**| ✅ CHKDSK<br>✅ DISM Image Repair<br>✅ SFC Scan                                  |
 | **Utilities**    | ✅ Defender Quick Scan<br>✅ MSRT<br>✅ SigVerif<br>✅ Disk Cleanup<br>✅ DNS Flush |
+| **Sysinternals Tools** | ✅ Downloads and extracts tools like Autoruns, TCPView, and Process Explorer |
 | **Port Check**   | `netstat -abn` + `netstat -a -n -o`                                              |
 | **Update or Repair** | ✅ Downloads the latest version of the script from GitHub and verifies its integrity |
 | **DNS Management** | ✅ Set DNS to Google or Cloudflare (IPv4 and IPv6)<br>✅ Restore automatic DNS (DHCP)<br>✅ Enable DNS over HTTPS (DoH) |

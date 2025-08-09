@@ -33,17 +33,18 @@ echo  Select an operation:
 echo.
 echo  [SYSTEM MAINTENANCE]
 echo   [0] WINDOWS UPDATE - Windows updates, no driver updates
-echo   [1] BASIC        - SFC only
-echo   [2] STANDARD     - DISM + SFC
-echo   [3] COMPREHENSIVE- CHKDSK + DISM + SFC
+echo   [1] BASIC SYSTEM FIX        - SFC only
+echo   [2] STANDARD SYSTEM FIX     - DISM + SFC
+echo   [3] COMPREHENSIVE SYSTEM FIX - CHKDSK + DISM + SFC (Recommended)
 echo.
 echo  [UTILITIES]
 echo   [4] SECURITY AND UTILITY SCANS - (Defender, mrt.exe, sigverif, DNS flush, Disk Cleanup)
 echo   [5] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
+echo   [6] DOWNLOAD SYSINTERNALS TOOLS - (Autoruns, TCPView, Process Explorer)
 echo.
 echo  [NETWORKING]
-echo   [6] PORT CHECK   - Network ports
-echo   [7] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
+echo   [7] PORT CHECK   - Network ports
+echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
 echo.
 echo  ============================================
 echo.
@@ -51,7 +52,7 @@ powershell -NoProfile -Command ^
   "Write-Host -ForegroundColor Green 'If you encounter any issues, feel free to report them on GitHub:';" ^
   "Write-Host -ForegroundColor Cyan 'https://github.com/KristupasJon/WinSysMaintain-CLI/issues' Double click and CTRL+C;" ^
   "Write-Host ''"
-choice /C 01234567 /N /M "Enter selection : "
+choice /C 012345678 /N /M "Enter selection : "
 set /A OPTION=%errorlevel%-1
 
 if %OPTION%==0 goto :WINDOWS_UPDATE
@@ -59,9 +60,10 @@ if %OPTION%==1 goto :BASIC_SCAN
 if %OPTION%==2 goto :STANDARD_SCAN
 if %OPTION%==3 goto :FULL_SCAN
 if %OPTION%==4 goto :SECURITY_TOOLS
-if %OPTION%==6 goto :PORT_CHECK
 if %OPTION%==5 goto :UPDATE
-if %OPTION%==7 goto :DNS_MANAGEMENT
+if %OPTION%==6 goto :DOWNLOAD_SYSINTERNALS
+if %OPTION%==7 goto :PORT_CHECK
+if %OPTION%==8 goto :DNS_MANAGEMENT
 
 :WINDOWS_UPDATE
 cls
@@ -209,6 +211,7 @@ goto MAIN_MENU
 @echo off
 echo Checking for updates...
 start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13;" ^
   "try {" ^
     "$url='https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat';" ^
     "$checksumUrl='https://raw.githubusercontent.com/KristupasJon/WinSysMaintain-CLI/main/WinSysMaintain.bat.sha256';" ^
@@ -325,3 +328,26 @@ ipconfig /flushdns
 echo DoH enabled for Cloudflare and Google DNS servers.
 pause
 goto :DNS_MANAGEMENT
+
+:DOWNLOAD_SYSINTERNALS
+cls
+echo.
+echo  [DOWNLOAD SYSINTERNALS TOOLS] Downloading tools...
+echo  ============================================
+set "DOWNLOAD_DIR=%~dp0"
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "$downloadDir = '%DOWNLOAD_DIR%';" ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13;" ^
+  "try {" ^
+    "$tools = @('https://download.sysinternals.com/files/Autoruns.zip','https://download.sysinternals.com/files/TCPView.zip','https://download.sysinternals.com/files/ProcessExplorer.zip');" ^
+    "foreach ($url in $tools) {" ^
+      "$fileName = [System.IO.Path]::GetFileName($url);" ^
+      "$outputPath = Join-Path $downloadDir $fileName;" ^
+      "Invoke-WebRequest -Uri $url -OutFile $outputPath -MaximumRedirection 0;" ^
+    "}" ^
+  "} catch { Write-Host $_.Exception.Message -ForegroundColor Red }"
+echo.
+echo  Tools downloaded to: %DOWNLOAD_DIR%
+pause
+goto :MAIN_MENU
