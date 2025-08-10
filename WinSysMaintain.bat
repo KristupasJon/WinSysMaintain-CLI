@@ -71,6 +71,7 @@ echo.
 echo  [WINDOWS UPDATE] Checking for updates...
 echo  ============================================
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13;" ^
   "if (-not (Get-Module -ListAvailable PSWindowsUpdate)) {" ^
     "Install-Module PSWindowsUpdate -Force -Scope CurrentUser -Repository PSGallery -AllowClobber;" ^
   "};" ^
@@ -146,10 +147,15 @@ echo  [SYSTEM UTILITIES] Security and cleanup (NOTE : Wait for windows to open a
 echo  ============================================
 echo.
 echo  Phase [1/5]: Defender Quick Scan
+echo  NOTE: If you are running a third party antivirus registered with Microsoft Security Center, you need to skip this scan.
+set /p DEFENDER_CONFIRM="Run Windows Defender Quick Scan? (Y to run, any other key to skip): "
+if /I not "%DEFENDER_CONFIRM%"=="Y" goto :SKIP_DEFENDER_SCAN
 pushd "%ProgramFiles%\Windows Defender"
 MpCmdRun.exe -Scan -ScanType 1 -DisableRemediation -ReturnHR
 if %errorlevel% NEQ 0 goto :ERROR_HANDLER
 popd
+echo.
+:SKIP_DEFENDER_SCAN
 echo.
 echo  Phase [2/5]: MS Malicious Software Removal
 mrt.exe
@@ -165,15 +171,6 @@ echo.
 echo  Phase [5/5]: Disk Cleanup
 cleanmgr
 if %errorlevel% NEQ 0 goto :ERROR_HANDLER
-:ERROR_HANDLER
-color 0C
-echo.
-echo  [ERROR] A critical error occurred during maintenance.
-echo  The last operation failed with error code %errorlevel%.
-echo  Press any key to return to the main menu...
-pause >nul
-color 1F
-goto MAIN_MENU
 
 goto :COMPLETION
 
@@ -240,6 +237,7 @@ start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
       "Write-Host ('Expected: ' + $expectedHash);" ^
       "Write-Host ('Actual  : ' + $remoteHash);" ^
       "Write-Host 'Update aborted due to security risk or corruption. Try again later.';" ^
+      "Write-Host 'If the issue persists, try flushing your DNS cache using ipconfig /flushdns.';" ^
       "pause;" ^
       "exit 1" ^
     "}" ^
@@ -259,6 +257,7 @@ start "" powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "} catch {" ^
     "Write-Host ('! Update failed: ' + $_.Exception.Message) -ForegroundColor Red;" ^
     "Write-Host 'Perhaps check your internet connection or read exception.';" ^
+    "Write-Host 'If the issue persists, try flushing your DNS cache using ipconfig /flushdns.';" ^
     "pause;" ^
     "exit 1" ^
   "}"
@@ -351,3 +350,13 @@ echo.
 echo  Tools downloaded to: %DOWNLOAD_DIR%
 pause
 goto :MAIN_MENU
+
+:ERROR_HANDLER
+color 0C
+echo.
+echo  [ERROR] A critical error occurred during maintenance.
+echo  The last operation failed with error code %errorlevel%.
+echo  Press any key to return to the main menu...
+pause >nul
+color 1F
+goto MAIN_MENU
