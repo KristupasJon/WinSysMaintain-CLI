@@ -25,8 +25,8 @@ echo            "    \/  \/   |_|_| |_|_____/ \__, |___/_|  |_|\__,_|_|_| |_|\__
 echo            "                             __/ |                                           "
 echo            "                            |___/                                            "
 echo.
-echo                      Windows Lightweight System Maintenance CLI by KRISTUPAS
-echo                                        version 20250806.2
+echo                      Windows Lightweight System Maintenance by Kristupas
+echo                                        version 20250813
 echo                        (https://github.com/KristupasJon/WinSysMaintain-CLI)
 echo.
 echo  Select an operation:
@@ -39,12 +39,13 @@ echo   [3] COMPREHENSIVE SYSTEM FIX - CHKDSK + DISM + SFC (Recommended)
 echo.
 echo  [UTILITIES]
 echo   [4] SECURITY AND UTILITY SCANS - (Defender, mrt.exe, sigverif, DNS flush, Disk Cleanup)
-echo   [5] UPDATE OR REPAIR (Uses HTTPS and confirms SHA256 hash) - Downloads latest version from GitHub
-echo   [6] DOWNLOAD SYSINTERNALS TOOLS - (Autoruns, TCPView, Process Explorer)
+echo   [5] DOWNLOAD SYSINTERNALS TOOLS - (Autoruns, TCPView, Process Explorer)
+echo   [6] DOWNLOAD WINAERO TWEAKER - (Tweaking and customization tool)
+echo   [7] UPDATE OR REPAIR WinSysMaintain.bat - Downloads latest version from GitHub
 echo.
 echo  [NETWORKING]
-echo   [7] PORT CHECK   - Network ports
-echo   [8] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
+echo   [8] PORT CHECK   - Network ports
+echo   [9] DNS MANAGEMENT - Manage DNS settings and enable DoH (Not recommended)
 echo.
 echo  ============================================
 echo.
@@ -52,7 +53,7 @@ powershell -NoProfile -Command ^
   "Write-Host -ForegroundColor Green 'If you encounter any issues, feel free to report them on GitHub:';" ^
   "Write-Host -ForegroundColor Cyan 'https://github.com/KristupasJon/WinSysMaintain-CLI/issues' Double click and CTRL+C;" ^
   "Write-Host ''"
-choice /C 012345678 /N /M "Enter selection : "
+choice /C 0123456789 /N /M "Enter selection : "
 set /A OPTION=%errorlevel%-1
 
 if %OPTION%==0 goto :WINDOWS_UPDATE
@@ -60,10 +61,11 @@ if %OPTION%==1 goto :BASIC_SCAN
 if %OPTION%==2 goto :STANDARD_SCAN
 if %OPTION%==3 goto :FULL_SCAN
 if %OPTION%==4 goto :SECURITY_TOOLS
-if %OPTION%==5 goto :UPDATE
-if %OPTION%==6 goto :DOWNLOAD_SYSINTERNALS
-if %OPTION%==7 goto :PORT_CHECK
-if %OPTION%==8 goto :DNS_MANAGEMENT
+if %OPTION%==5 goto :DOWNLOAD_SYSINTERNALS
+if %OPTION%==6 goto :DOWNLOAD_WINAERO
+if %OPTION%==7 goto :UPDATE
+if %OPTION%==8 goto :PORT_CHECK
+if %OPTION%==9 goto :DNS_MANAGEMENT
 
 :WINDOWS_UPDATE
 cls
@@ -343,11 +345,43 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "foreach ($url in $tools) {" ^
       "$fileName = [System.IO.Path]::GetFileName($url);" ^
       "$outputPath = Join-Path $downloadDir $fileName;" ^
-      "Invoke-WebRequest -Uri $url -OutFile $outputPath -MaximumRedirection 0;" ^
+      "Invoke-WebRequest -Uri $url -OutFile $outputPath;" ^
     "}" ^
+    "Write-Host 'Download completed successfully!' -ForegroundColor Green;" ^
+    "Write-Host 'Files saved to: $downloadDir' -ForegroundColor Yellow;" ^
   "} catch { Write-Host $_.Exception.Message -ForegroundColor Red }"
 echo.
+echo  [INFO] Sysinternals tools download completed.
 echo  Tools downloaded to: %DOWNLOAD_DIR%
+pause
+goto :MAIN_MENU
+
+:DOWNLOAD_WINAERO
+cls
+echo.
+echo  [DOWNLOAD WINAERO TWEAKER] Downloading Winaero Tweaker...
+echo  ============================================
+set "DOWNLOAD_DIR=%~dp0"
+
+echo  [INFO] Starting download of Winaero Tweaker...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "Write-Host 'Downloading Winaero Tweaker...' -ForegroundColor Cyan;" ^
+  "$downloadDir = '%DOWNLOAD_DIR%';" ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13;" ^
+  "try {" ^
+    "Invoke-WebRequest -Uri 'https://winaerotweaker.com/download/' `" ^
+    "  -Headers @{ `" ^
+    "    'User-Agent' = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'; `" ^
+    "    'Referer' = 'https://winaerotweaker.com/'; `" ^
+    "  } `" ^
+    "  -MaximumRedirection 5 `" ^
+    "  -OutFile (Join-Path '%DOWNLOAD_DIR%' 'WinaeroTweaker.zip');" ^
+    "Write-Host 'Winaero Tweaker downloaded successfully to ' -NoNewline;" ^
+    "Write-Host $outputPath -ForegroundColor Green;" ^
+  "} catch { Write-Host $_.Exception.Message -ForegroundColor Red }"
+echo.
+echo  [INFO] Winaero Tweaker download completed.
+echo  Winaero Tweaker has been downloaded to: %DOWNLOAD_DIR%
 pause
 goto :MAIN_MENU
 
