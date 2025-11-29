@@ -1,49 +1,47 @@
-# 🧰 WinSysMaintain-CLI
+# WinSysMaintain-CLI
 
 **A lightweight, no bloat Windows maintenance toolkit in a single `.bat`.**
 
-Perfectly portable and quickly updatable.
-Perfect for power users, or anyone who wants reliable system maintenance without the clutter.
+Portable and quickly updatable.
 
 ![Main Menu](https://github.com/user-attachments/assets/c1ad1fe5-668e-42e3-bd04-02be9ab669be)
 
 
 ---
 
-### 🔧 Why WinSysMaintain-CLI?
+### Why WinSysMaintain-CLI?
 
 Unlike bloated scripts and cluttered tools, **WinSysMaintain-CLI** is:
 
-- ✅ **Minimal** – Just the essentials, no redundant fluff.
-- 🪶 **Lightweight** – A single `.bat` file you can run anywhere.
-- 🚀 **Portable** – No installation required. Ideal for USB drives, remote work, or IT toolkits.
-- 🔐 **Secure Auto-Updating** – Keeps itself current without the hassle.
-- 🔒 **Secure Downloads** – All downloads are protected with enforced TLS protocols (TLS 1.2 and TLS 1.3).
+-  **Minimal** – Just the essentials.
+-  **Lightweight** – A single `.bat` file you can run anywhere.
+-  **Portable** – No installation required. Ideal for USB drives, remote work, or IT toolkits.
+-  **Auto-Updating** – Keeps itself current without the hassle.
 
 ![Self-Updating](https://github.com/user-attachments/assets/6ddb598c-13f8-4bc9-ad5d-342caaa66783)
 
 ---
 
-### 🛠️ Maintenance Modes
+### Maintenance Modes
 
 Choose your level of cleanup with a single keypress:
 
 | Mode             | Tasks Performed                                                                 |
 |------------------|----------------------------------------------------------------------------------|
-| **Windows Update** | ✅ Installs Windows updates (no driver updates)                                 |
-| **Basic**        | ✅ System File Checker (SFC) only                                                |
-| **Standard**     | ✅ DISM Image Repair<br>✅ SFC Scan                                               |
-| **Comprehensive**| ✅ CHKDSK<br>✅ DISM Image Repair<br>✅ SFC Scan                                  |
-| **Utilities**    | ✅ Defender Quick Scan<br>✅ MSRT<br>✅ SigVerif<br>✅ Disk Cleanup<br>✅ DNS Flush |
-| **Sysinternals Tools** | ✅ Downloads and extracts tools like Autoruns, TCPView, and Process Explorer |
-| **Winaero Tweaker** | ✅ Downloads Winaero Tweaker (Windows customization tool) |
+| **Windows Update** |  Installs Windows updates (no driver updates)                                 |
+| **Basic**        |  System File Checker (SFC) only                                                |
+| **Standard**     |  DISM Image Repair<br> SFC Scan                                               |
+| **Comprehensive**|  CHKDSK<br> DISM Image Repair<br> SFC Scan                                  |
+| **Utilities**    |  Defender Quick Scan<br> MSRT<br> SigVerif<br> Disk Cleanup<br> DNS Flush |
+| **Sysinternals Tools** | Downloads and extracts tools like Autoruns, TCPView, and Process Explorer |
+| **Winaero Tweaker** | Downloads Winaero Tweaker (Windows customization tool) |
 | **Port Check**   | `netstat -abn` + `netstat -a -n -o`                                              |
-| **Update or Repair** | ✅ Downloads the latest version of the script from GitHub and verifies its integrity |
-| **DNS Management** | ✅ Set DNS to Google or Cloudflare (IPv4 and IPv6)<br>✅ Restore automatic DNS (DHCP)<br>✅ Enable DNS over HTTPS (DoH) |
+| **Update or Repair** | Downloads the latest version of the script from GitHub and verifies its integrity |
+| **DNS Management** | Set DNS to Google or Cloudflare (IPv4 and IPv6)<br> Restore automatic DNS (DHCP)<br> Enable DNS over HTTPS (DoH) |
 
 ---
 
-### 🚀 Installation
+### Installation
 
 To get started with **WinSysMaintain-CLI**, follow these steps:
 
@@ -58,7 +56,7 @@ To get started with **WinSysMaintain-CLI**, follow these steps:
 
 ---
 
-### 📚 Sources
+### Sources
 
 - [System File Checker Tool](https://support.microsoft.com/en-us/topic/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system-files-79aa86cb-ca52-166a-92a3-966e85d4094e)
 - [DISM Tool](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/repair-a-windows-image)
@@ -66,5 +64,5 @@ To get started with **WinSysMaintain-CLI**, follow these steps:
 - [Windows Defender](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/microsoft-defender-antivirus-in-windows-10)
 - [Netstat Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat)
 - [DNS over HTTPS (DoH)](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/)
- - [Sysinternals Suite](https://learn.microsoft.com/en-us/sysinternals/downloads/)
- - [Winaero Tweaker](https://winaerotweaker.com/)
+- [Sysinternals Suite](https://learn.microsoft.com/en-us/sysinternals/downloads/)
+- [Winaero Tweaker](https://winaerotweaker.com/)
