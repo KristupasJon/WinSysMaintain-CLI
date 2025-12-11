@@ -1,22 +1,17 @@
 # WinSysMaintain-CLI
 
-**A lightweight, no bloat Windows maintenance toolkit in a single `.bat`.**
-
-Portable and quickly updatable.
+**A lightweight, no bloat Windows maintenance toolkit in a `.bat`.**
 
 ![Main Menu](https://github.com/user-attachments/assets/c1ad1fe5-668e-42e3-bd04-02be9ab669be)
-
 
 ---
 
 ### Why WinSysMaintain-CLI?
 
-Unlike bloated scripts and cluttered tools, **WinSysMaintain-CLI** is:
+Unlike bloated scripts **WinSysMaintain-CLI** is:
 
 -  **Minimal** – Just the essentials.
--  **Lightweight** – A single `.bat` file you can run anywhere.
 -  **Portable** – No installation required. Ideal for USB drives, remote work, or IT toolkits.
--  **Auto-Updating** – Keeps itself current without the hassle.
 
 ![Self-Updating](https://github.com/user-attachments/assets/6ddb598c-13f8-4bc9-ad5d-342caaa66783)
 
@@ -52,7 +47,7 @@ To get started with **WinSysMaintain-CLI**, follow these steps:
    ```
 
 2. **Run the Script**:
-   Right-click the downloaded `WinSysMaintain.bat` file and select **Run as Administrator**.
+   Right click the downloaded `WinSysMaintain.bat` file and select **Run as Administrator**.
 
 ---
 
